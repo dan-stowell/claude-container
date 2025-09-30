@@ -1,15 +1,17 @@
 FROM alpine:3.19
 
-# Install required dependencies
+# Install required dependencies including C++ runtime
 RUN apk add --no-cache \
     bash \
     curl \
     ca-certificates \
     coreutils \
     grep \
-    sed
+    sed \
+    libstdc++ \
+    libgcc
 
-# Install your application
+# Install Claude Code
 RUN curl -fsSL https://claude.ai/install.sh | bash -s 2.0.1
 
 # Create directories with proper ownership
