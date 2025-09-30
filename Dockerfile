@@ -15,15 +15,17 @@ RUN apt-get update && apt-get install -y \
     lsb-release \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Node.js 22 (latest LTS)
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
-    && apt-get install -y nodejs
+curl -fsSL https://claude.ai/install.sh | bash -s 2.0.1
 
-# Verify Node.js installation
-RUN node --version && npm --version
+#XXX # Install Node.js 22 (latest LTS)
+#XXX RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+#XXX    && apt-get install -y nodejs
 
-# Install Claude Code globally
-RUN npm install -g @anthropic-ai/claude-code
+#XXX # Verify Node.js installation
+#XXX RUN node --version && npm --version
+
+#XXX # Install Claude Code globally
+#XXX RUN npm install -g @anthropic-ai/claude-code
 
 # Create directories with proper ownership
 RUN mkdir -p /claude /workspace && \
