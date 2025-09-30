@@ -1,37 +1,20 @@
-# Use Ubuntu LTS as base image for better compatibility
-FROM ubuntu:24.04
+FROM alpine:3.19
 
-# Set environment variables
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+# Install required dependencies
+RUN apk add --no-cache \
+    bash \
     curl \
-    wget \
-    git \
-    build-essential \
     ca-certificates \
-    gnupg \
-    lsb-release \
-    && rm -rf /var/lib/apt/lists/*
+    coreutils \
+    grep \
+    sed
 
-curl -fsSL https://claude.ai/install.sh | bash -s 2.0.1
-
-#XXX # Install Node.js 22 (latest LTS)
-#XXX RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
-#XXX    && apt-get install -y nodejs
-
-#XXX # Verify Node.js installation
-#XXX RUN node --version && npm --version
-
-#XXX # Install Claude Code globally
-#XXX RUN npm install -g @anthropic-ai/claude-code
+# Install your application
+RUN curl -fsSL https://claude.ai/install.sh | bash -s 2.0.1
 
 # Create directories with proper ownership
 RUN mkdir -p /claude /workspace && \
     chown -R 1000:1000 /claude /workspace
 
-# Create workspace directory
 WORKDIR /workspace
-
 CMD ["sh", "-c", "echo 'Claude Code container is ready!'"]
