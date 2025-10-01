@@ -1,0 +1,24 @@
+FROM alpine:3.19
+
+# Install required dependencies including C++ runtime
+RUN apk add --no-cache \
+    bash \
+    curl \
+    ca-certificates \
+    coreutils \
+    grep \
+    sed \
+    libstdc++ \
+    libgcc
+
+RUN mkdir -p /root/bin && \
+    curl -L https://github.com/openai/codex/releases/download/rust-v0.42.0/codex-aarch64-unknown-linux-musl.tar.gz \
+         -o /tmp/codex.tar.gz && \
+    tar -xzf /tmp/codex.tar.gz -C /root/bin && rm /tmp/codex.tar.gz
+
+# Create directories with proper ownership
+RUN mkdir -p /codex /workspace && \
+    chown -R 1000:1000 /codex /workspace
+
+WORKDIR /workspace
+CMD ["sh", "-c", "echo 'Codex container is ready!'"]
